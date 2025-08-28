@@ -4,15 +4,25 @@
 
 #![no_std]
 #![no_main]
+#![feature(custom_test_frameworks)]
+#![test_runner(blog_os::test_runner)]
+#![reexport_test_harness_main = "test_main"]
+
 
 use core::panic::PanicInfo;
-mod vga_buffer;
+use blog_os::println;
 
-
+#[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
     loop {}
+}
+
+#[cfg(test)]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    blog_os::test_panic_handler(info);
 }
 
 //static HELLO: &[u8] = b"Hello World!";
@@ -28,8 +38,11 @@ pub extern "C" fn _start() -> ! {
         }
     }*/
 
-     println!("Hello World{}", "!");
-     panic!("error happened fares is gay");
+     #[cfg(test)]
+    test_main();
+
+     println!("maher is a {}", "!");
 
     loop {}
 }
+
