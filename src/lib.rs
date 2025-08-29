@@ -1,4 +1,4 @@
-#![no_std]
+![no_std]
 
 
 
@@ -12,7 +12,7 @@ pub mod serial;
 pub mod vga_buffer;
 
 pub trait Testable {
-    fn run(&self) -> ();
+   fn run(&self) -> ();
 }
 
 impl<T> Testable for T
