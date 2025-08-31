@@ -38,6 +38,15 @@ pub extern "C" fn _start() -> ! {
         }
     }*/
 
+    blog_os::init();
+    // trigger a page fault: invalid virtual memory
+    unsafe {
+        *(0xdeadbeef as *mut u8) = 42;
+    };    
+    println!("Hello World{}", "!");
+    //x86_64::instructions::interrupts::int3();
+    
+
      #[cfg(test)]
     test_main();
 
