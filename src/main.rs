@@ -25,6 +25,10 @@ fn panic(info: &PanicInfo) -> ! {
     blog_os::test_panic_handler(info);
 }
 
+
+fn stackoverflow(){
+    return stackoverflow();
+}
 //static HELLO: &[u8] = b"Hello World!";
 
 #[unsafe(no_mangle)]
@@ -39,10 +43,11 @@ pub extern "C" fn _start() -> ! {
     }*/
 
     blog_os::init();
+    
     // trigger a page fault: invalid virtual memory
-    unsafe {
+    /*unsafe {
         *(0xdeadbeef as *mut u8) = 42;
-    };    
+    };*/    
     println!("Hello World{}", "!");
     //x86_64::instructions::interrupts::int3();
     
