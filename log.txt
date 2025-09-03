@@ -1,0 +1,11 @@
+    Updating crates.io index
+     Locking 1 package to latest Rust 1.91.0-nightly compatible version
+      Adding pc-keyboard v0.7.0 (available: v0.8.0)
+ Downloading crates ...
+  Downloaded pc-keyboard v0.7.0
+   Compiling pc-keyboard v0.7.0
+   Compiling blog_os v0.1.0 (/home/ghaithlassoued/Projects/blog_os)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.56s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+   Compiling bootloader v0.9.33 (/home/ghaithlassoued/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bootloader-0.9.33)
+    Finished `release` profile [optimized + debuginfo] target(s) in 0.85s

@@ -26,9 +26,6 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 
-fn stackoverflow(){
-    return stackoverflow();
-}
 //static HELLO: &[u8] = b"Hello World!";
 
 #[unsafe(no_mangle)]
@@ -57,6 +54,6 @@ pub extern "C" fn _start() -> ! {
 
      println!("maher is a {}", "!");
 
-    loop {}
+    loop{}
 }
 
