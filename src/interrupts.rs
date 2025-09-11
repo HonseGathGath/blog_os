@@ -18,7 +18,7 @@ lazy_static! {
             .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
             }
         idt[InterruptIndex::Timer.as_usize()]
-            .set_handler_fn(timer_interrupt_handler);
+            .set_handler_fn(timer_interrup;
         idt[InterruptIndex::Keyboard.as_usize()]
             .set_handler_fn(keyboard_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
@@ -108,7 +108,7 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(
     use x86_64::instructions::port::Port;
 
     lazy_static! {
-        static ref KEYBOARD: Mutex<Keyboard<layouts::Uk105Key, ScancodeSet1>> =
+        static ref KEYBOARD: Mutex<Keyboard<layouts::Azerty, ScancodeSet1>> =
             Mutex::new(Keyboard::new(ScancodeSet1::new(),
                 layouts::Uk105Key, HandleControl::Ignore)
             );
