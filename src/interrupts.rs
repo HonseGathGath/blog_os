@@ -18,7 +18,7 @@ lazy_static! {
             .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
             }
         idt[InterruptIndex::Timer.as_usize()]
-            .set_handler_fn(timer_interrup;
+            .set_handler_fn(timer_interrupt_handler);
         idt[InterruptIndex::Keyboard.as_usize()]
             .set_handler_fn(keyboard_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
@@ -89,13 +89,15 @@ impl InterruptIndex {
     }
 }
 
-extern "x86-interrupt" fn timer_interrupt_handler(
-    _stack_frame: InterruptStackFrame)
+extern "x86-interrupt" 
+fn timer_interrupt_handler(_stack_frame: InterruptStackFrame)
 {
-    print!(".");
+    print!("|");
 
     unsafe{
-        PICS.lock().notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
+        PICS
+            .lock()
+            .notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
     }
     
 }
@@ -110,7 +112,7 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(
     lazy_static! {
         static ref KEYBOARD: Mutex<Keyboard<layouts::Azerty, ScancodeSet1>> =
             Mutex::new(Keyboard::new(ScancodeSet1::new(),
-                layouts::Uk105Key, HandleControl::Ignore)
+                layouts::Azerty, HandleControl::Ignore)
             );
     }
 
