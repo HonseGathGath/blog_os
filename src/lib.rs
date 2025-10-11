@@ -39,7 +39,7 @@ fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     hlt_loop();
 }
 
-pub fn hlt_loop(){
+pub fn hlt_loop() -> !{
     loop {
         x86_64::instructions::hlt();
     }
@@ -73,7 +73,7 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
     serial_println!("Error: {}\n", info);
     exit_qemu(QemuExitCode::Failed);
     //hlt_loop();
-    loop{}
+    hlt_loop();
 }
 
 /// Entry point for `cargo test`
@@ -85,7 +85,7 @@ pub extern "C" fn _start() -> ! {
     unsafe{interrupts::PICS.lock().initialize()};
     x86_64::instructions::interrupts::enable();
     //hlt_loop();
-    loop{}
+    hlt_loop();
 }
 
 #[cfg(test)]
@@ -108,4 +108,4 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
         let mut port = Port::new(0xf4);
         port.write(exit_code as u32);
     }
-}
+ }
