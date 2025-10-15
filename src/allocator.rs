@@ -1,7 +1,12 @@
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::ptr::null_mut;
-use linked_list_allocator::LockedHeap;
+//use linked_list_allocator::LockedHeap;
+use linked_list::LinkedListAllocator;
 
+//different allocator designs
+pub mod linked_list;
+pub mod bump;
+pub mod fixed_size_block;
 pub struct Dummy;
 
 pub const HEAP_START: usize = 0x_4444_4444_0000;
@@ -18,7 +23,7 @@ unsafe impl GlobalAlloc for Dummy {
 }
 
 #[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
+static ALLOCATOR: Locked<LinkedListAllocator>= Locked::new(LinkedListAllocator::new());
 
 
 use x86_64::{
@@ -55,4 +60,32 @@ pub fn init_heap(
     }
 
     Ok(())
+}
+
+pub struct Locked<A> {
+    inner: spin::Mutex<A>,
+}
+
+impl<A> Locked<A> {
+    pub const fn new(inner: A) -> Self {
+        Locked {
+            inner: spin::Mutex::new(inner),
+        }
+    }
+
+    pub fn lock(&self) -> spin::MutexGuard<A> {
+        self.inner.lock()
+    }
+}
+
+fn align_up(addr: usize, align: usize) -> usize {
+    let remainder = addr % align;
+    if remainder == 0 {
+        addr // addr already aligned
+    } else {
+        addr - remainder + align
+    }
+
+    //(addr + align - 1) & !(align - 1) also possible code implementation
+    //requires align to be a power of two which is possible through the GlobalAlloc trait
 }
