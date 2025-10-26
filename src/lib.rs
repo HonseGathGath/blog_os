@@ -1,24 +1,21 @@
 #![no_std]
-
-
-
 #![cfg_attr(test, no_main)]
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
-
 #![feature(abi_x86_interrupt)]
 
 extern crate alloc;
 use core::panic::PanicInfo;
-pub mod serial;
-pub mod vga_buffer;
-pub mod interrupts;
-pub mod gdt;
 pub mod allocator;
+pub mod gdt;
+pub mod interrupts;
 pub mod memory;
+pub mod serial;
+pub mod task;
+pub mod vga_buffer;
 
-pub fn init(){
+pub fn init() {
     gdt::init();
     interrupts::init_idt();
     unsafe { interrupts::PICS.lock().initialize() };
@@ -40,14 +37,14 @@ fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     hlt_loop();
 }
 
-pub fn hlt_loop() -> !{
+pub fn hlt_loop() -> ! {
     loop {
         x86_64::instructions::hlt();
     }
 }
 
 pub trait Testable {
-   fn run(&self) -> ();
+    fn run(&self) -> ();
 }
 
 impl<T> Testable for T
@@ -83,7 +80,7 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
 pub extern "C" fn _start() -> ! {
     init();
     test_main();
-    unsafe{interrupts::PICS.lock().initialize()};
+    unsafe { interrupts::PICS.lock().initialize() };
     x86_64::instructions::interrupts::enable();
     //hlt_loop();
     hlt_loop();
@@ -109,4 +106,4 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
         let mut port = Port::new(0xf4);
         port.write(exit_code as u32);
     }
- }
+}
