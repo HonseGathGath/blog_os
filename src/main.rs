@@ -14,6 +14,8 @@ use alloc::boxed::Box;
 use core::panic::PanicInfo;
 use blog_os::println;
 use bootloader::{BootInfo, entry_point};
+use blog_os::task::{keyboard, Task};
+use blog_os::task::executor::Executor;
 
 entry_point!(kernel_main);
 
@@ -46,9 +48,14 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     allocator::init_heap(&mut mapper, &mut frame_allocator)
     .expect("heap init failed");
 
-    let x = Box::new(41);
+    let mut executor = Executor::new();
+    executor.spawn(Task::new(keyboard::print_keypresses()));
+    executor.run();
+
+
+    //let x = Box::new(41);
         
-    // as before*/
+
     #[cfg(test)]
     test_main();
 

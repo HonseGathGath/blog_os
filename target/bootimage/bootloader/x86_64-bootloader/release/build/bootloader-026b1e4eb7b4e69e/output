@@ -1,7 +1,7 @@
-cargo:rerun-if-changed=/home/ghaith/dev/blog_os/Cargo.toml
-cargo:rustc-link-search=native=/home/ghaith/dev/blog_os/target/bootimage/bootloader/x86_64-bootloader/release/build/bootloader-026b1e4eb7b4e69e/out
+cargo:rerun-if-changed=/home/ghaith/main/dev/blog_os/Cargo.toml
+cargo:rustc-link-search=native=/home/ghaith/main/dev/blog_os/target/bootimage/bootloader/x86_64-bootloader/release/build/bootloader-026b1e4eb7b4e69e/out
 cargo:rustc-link-lib=static=kernel_bin-blog_os
 cargo:rerun-if-env-changed=KERNEL
 cargo:rerun-if-env-changed=KERNEL_MANIFEST
-cargo:rerun-if-changed=/home/ghaith/dev/blog_os/target/x86_64-blog_os/debug/blog_os
+cargo:rerun-if-changed=/home/ghaith/main/dev/blog_os/target/x86_64-blog_os/debug/blog_os
 cargo:rerun-if-changed=build.rs
