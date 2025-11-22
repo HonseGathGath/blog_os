@@ -101,3 +101,10 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
             .notify_end_of_interrupt(InterruptIndex::Keyboard.as_u8());
     }
 }
+
+extern "x86-interrupt" fn syscall_interrupt_handler(mut stack_frame: InterruptStackFrame) {
+    // Syscall arguments are passed in registers (we'll extract them from stack frame)
+    // For now, just acknowledge the interrupt
+    // Real implementation will extract registers and call crate::syscall::syscall_handler
+    println!("Syscall interrupt received");
+}
