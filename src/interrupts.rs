@@ -17,6 +17,7 @@ lazy_static! {
         }
         idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
         idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
+        idt[0x80].set_handler_fn(syscall_interrupt_handler);
         idt.page_fault.set_handler_fn(page_fault_handler);
         idt
     };
@@ -89,7 +90,6 @@ extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFr
 }
 
 extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStackFrame) {
-
     use x86_64::instructions::port::Port;
 
     let mut port = Port::new(0x60);
